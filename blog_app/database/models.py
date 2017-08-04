@@ -6,15 +6,16 @@ from blog_app.database import db
 class Article(db.Model):
     id = db.Column(db.Integer, primery_key=True)
     title = db.Column(db.String(80))
-    body = db.Column(db.Text)
+    content = db.Column(db.Text)
     pub_date = db.Column(db.DateTime)
 
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     category = db.relationship('Category', backref=db.backref('articles', lazy='dynamic'))
 
-    def __init__(self, title, body, category, pub_date=None):
+    def __init__(self, title, content, category, pub_date=None):
         self.title = title
-        self.body = body
+        self.content = content
+        self.category = category
         if pub_date is None:
             pub_date = datetime.utcnow()
         self.pub_date = pub_date
