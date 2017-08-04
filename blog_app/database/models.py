@@ -4,7 +4,7 @@ from blog_app.database import db
 
 
 class Article(db.Model):
-    id = db.Column(db.Integer, primery_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
     content = db.Column(db.Text)
     pub_date = db.Column(db.DateTime)
@@ -25,7 +25,7 @@ class Article(db.Model):
 
 
 class Category(db.Model):
-    id = db.Column(db.Integer, primery_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
 
     def __init__(self, name):

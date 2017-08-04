@@ -43,7 +43,7 @@ class CategoryCollection(Resource):
 
 
 @ns.route('/<int:id>')
-@api.make_response(404, 'category not found')
+@api.response(404, 'category not found')
 class CategoryItem(Resource):
     @api.marshal_with(category_with_articles)
     def get(self, category_id):
