@@ -10,7 +10,7 @@ from blog_app.database.models import Article
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('blog/posts', description='blog articles related operations')
+ns = api.namespace('blog/articles', description='blog articles related operations')
 
 
 @ns.route('/')

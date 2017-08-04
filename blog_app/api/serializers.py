@@ -22,7 +22,7 @@ page_of_articles = api.inherit('Page of articles', pagination, {
     'items': fields.List(fields.Nested(blog_article))
 })
 
-category = api.mode('Blog Category', {
+category = api.model('Blog Category', {
     'id': fields.Integer(readOnly=True, description='unique identifier of a category'),
     'name': fields.String(required=True, description='Category name')
 })
