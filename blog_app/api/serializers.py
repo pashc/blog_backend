@@ -27,6 +27,6 @@ category = api.mode('Blog Category', {
     'name': fields.String(required=True, description='Category name')
 })
 
-category_with_article = api.inherit('Blog category with articles', category, {
+category_with_articles = api.inherit('Blog category with articles', category, {
     'articles': fields.List(fields.Nested(blog_article))
 })
