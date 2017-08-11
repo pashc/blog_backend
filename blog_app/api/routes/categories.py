@@ -3,9 +3,8 @@ import logging
 from flask import request
 from flask_restplus import Resource
 
-from blog_app.api import api, service
+from blog_app.api import api, category_service
 from blog_app.api.serializers import category, category_with_articles
-from blog_app.database.models.categories import Categories
 
 log = logging.getLogger(__name__)
 
@@ -19,7 +18,7 @@ class CategoryCollection(Resource):
         """
         :return: list of all blog categories
         """
-        return Categories.query.all()
+        return category_service.find_all()
 
     @api.expect(category)
     @api.response(201, 'category successfully created')
@@ -38,8 +37,7 @@ class CategoryCollection(Resource):
         :return: None, status_code=201
         """
         data = request.json
-        service.create_category(data)
-        return None, 201
+        return category_service.create(data)
 
 
 @ns.route('/<int:id>')
@@ -51,7 +49,7 @@ class CategoryItem(Resource):
         :param category_id: the category to get
         :return: category with a list of articles
         """
-        return Categories.query.filter(Categories.id == category_id).one()
+        return category_service.find(category_id)
 
     @api.expect(category)
     @api.response(204, 'category successfully updated')
@@ -74,8 +72,7 @@ class CategoryItem(Resource):
         :return: None, status_code=201
         """
         data = request.json
-        service.update_category(category_id, data)
-        return None, 204
+        return category_service.update(category_id, data)
 
     @api.response(204, 'category sucessfully deleted')
     def delete(self, category_id):
@@ -84,5 +81,4 @@ class CategoryItem(Resource):
         :param category_id: the category to delete
         :return: None, status_code=204
         """
-        service.delete_category(category_id)
-        return None, 204
+        return category_service.delete(category_id)
