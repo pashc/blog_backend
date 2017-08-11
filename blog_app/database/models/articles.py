@@ -7,6 +7,7 @@ ARTICLE_ID = db.Sequence('article_id_seq', start=0)
 
 class Articles(db.Model):
     __tablename__ = 'articles'
+
     id = db.Column(db.Integer, ARTICLE_ID, primary_key=True, server_default=ARTICLE_ID.next_value())
     title = db.Column(db.String(80))
     content = db.Column(db.Text)
