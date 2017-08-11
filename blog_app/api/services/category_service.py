@@ -1,5 +1,5 @@
 from blog_app.database import db
-from blog_app.database.models.categories import Categories
+from blog_app.database.models.blog.categories import Categories
 
 
 def find(category_id):
