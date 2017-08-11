@@ -3,8 +3,9 @@ import logging
 from flask import request
 from flask_restplus import Resource
 
-from blog_app.api import api, category_service
+from blog_app.api import api
 from blog_app.api.serializers import category, category_with_articles
+from blog_app.api.services import category_service
 
 log = logging.getLogger(__name__)
 

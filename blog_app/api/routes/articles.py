@@ -3,9 +3,10 @@ import logging
 from flask import request
 from flask_restplus import Resource
 
-from blog_app.api import api, article_service
+from blog_app.api import api
 from blog_app.api.parser import pagination_parser
 from blog_app.api.serializers import page_of_articles, blog_article
+from blog_app.api.services import article_service
 
 log = logging.getLogger(__name__)
 

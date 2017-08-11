@@ -1,4 +1,4 @@
-from blog_app.api import category_service
+from blog_app.api.services import category_service
 from blog_app.database import db
 from blog_app.database.models.articles import Articles
 
