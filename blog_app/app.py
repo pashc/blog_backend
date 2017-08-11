@@ -3,8 +3,8 @@ import logging.config
 from flask import Flask, Blueprint
 
 from blog_app.api import api
-from blog_app.api.routes.articles import ns as articles_ns
-from blog_app.api.routes.categories import ns as categories_ns
+from blog_app.api.routes.blog.articles import ns as articles_ns
+from blog_app.api.routes.blog.categories import ns as categories_ns
 from blog_app.config import settings
 from blog_app.database import db
 
