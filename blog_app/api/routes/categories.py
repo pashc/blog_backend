@@ -5,7 +5,7 @@ from flask_restplus import Resource
 
 from blog_app.api import api, service
 from blog_app.api.serializers import category, category_with_articles
-from blog_app.database.models import Category
+from blog_app.database.models.categories import Categories
 
 log = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ class CategoryCollection(Resource):
         """
         :return: list of all blog categories
         """
-        return Category.query.all()
+        return Categories.query.all()
 
     @api.expect(category)
     @api.response(201, 'category successfully created')
@@ -51,7 +51,7 @@ class CategoryItem(Resource):
         :param category_id: the category to get
         :return: category with a list of articles
         """
-        return Category.query.filter(Category.id == category_id).one()
+        return Categories.query.filter(Categories.id == category_id).one()
 
     @api.expect(category)
     @api.response(204, 'category successfully updated')

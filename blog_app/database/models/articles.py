@@ -3,10 +3,9 @@ from datetime import datetime
 from blog_app.database import db
 
 ARTICLE_ID = db.Sequence('article_id_seq', start=0)
-CATEGORY_ID = db.Sequence('category_id_seq', start=0)
 
 
-class Article(db.Model):
+class Articles(db.Model):
     __tablename__ = 'articles'
     id = db.Column(db.Integer, ARTICLE_ID, primary_key=True, server_default=ARTICLE_ID.next_value())
     title = db.Column(db.String(80))
@@ -26,15 +25,3 @@ class Article(db.Model):
 
     def __repr__(self):
         return '<Article %r>' % self.title
-
-
-class Category(db.Model):
-    __tablename__ = 'categories'
-    id = db.Column(db.Integer, CATEGORY_ID, primary_key=True, server_default=CATEGORY_ID.next_value())
-    name = db.Column(db.String(50))
-
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return '<Category %r>' % self.name

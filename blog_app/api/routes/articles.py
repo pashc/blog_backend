@@ -6,7 +6,7 @@ from flask_restplus import Resource
 from blog_app.api import api, service
 from blog_app.api.parser import pagination_parser
 from blog_app.api.serializers import page_of_articles, blog_article
-from blog_app.database.models import Article
+from blog_app.database.models.articles import Articles
 
 log = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ class ArticleCollection(Resource):
         page = data.get('page', 1)
         per_page = data.get('per_page', 10)
 
-        return Article.query.paginate(page, per_page, error_out=False)
+        return Articles.query.paginate(page, per_page, error_out=False)
 
     @api.expect(blog_article)
     def post(self):
@@ -47,7 +47,7 @@ class ArticleItem(Resource):
         :param article_id: the article to get
         :return: the article for the given id
         """
-        return Article.query.filter(Article.id == article_id).one()
+        return Articles.query.filter(Articles.id == article_id).one()
 
     @api.expect(blog_article)
     @api.response(204, 'article successfully updated')
@@ -112,7 +112,7 @@ class ArticleArchiveCollection(Resource):
         end_month = month + 1 if month else 12
         start_date = '{0:04d}-{1:02d}-{2:02d}'.format(year, start_month, start_day)
         end_date = '{0:04d}-{1:02d}-{2:02d}'.format(year, end_month, end_day)
-        return Article.query.filter(
-            Article.pub_date >= start_date).filter(
-            Article.pub_date <= end_date).paginate(
+        return Articles.query.filter(
+            Articles.pub_date >= start_date).filter(
+            Articles.pub_date <= end_date).paginate(
             page, per_page, error_out=False)
