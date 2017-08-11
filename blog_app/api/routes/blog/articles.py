@@ -75,7 +75,7 @@ class ArticleItem(Resource):
     def delete(self, article_id):
         """
         deletes the article for the given id
-        :param article_id: the article to delte
+        :param article_id: the article to delete
         :return: None, status_code=204
         """
         return article_service.delete(article_id)
