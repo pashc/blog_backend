@@ -1,5 +1,5 @@
 from blog_app.database import db
-from blog_app.database.models.users import Users
+from blog_app.database.models.auth.users import Users
 
 
 def find(user_id):
