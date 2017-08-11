@@ -11,3 +11,6 @@ RESTPLUS_ERROR_404_HELP = False
 # SQLAlchemy settings
 SQLALCHEMY_DATABASE_URI = 'postgresql://localhost:5432/blog'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+# Auth
+SECRET_KEY = 'TopSecret'
