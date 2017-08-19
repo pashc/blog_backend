@@ -7,6 +7,7 @@ from blog_app.api import api
 from blog_app.api.parser import pagination_parser
 from blog_app.api.serializers import page_of_articles, blog_article
 from blog_app.api.services import article_service
+from blog_app.app import auth
 
 log = logging.getLogger(__name__)
 
@@ -14,6 +15,7 @@ ns = api.namespace('blog/articles', description='blog articles related operation
 
 
 @ns.route('/')
+@auth.login_required
 class ArticleCollection(Resource):
     @api.expect(pagination_parser)
     @api.marshal_with(page_of_articles)
