@@ -31,7 +31,7 @@ category_with_articles = api.inherit('Blog category with articles', category, {
     'articles': fields.List(fields.Nested(blog_article))
 })
 
-user = api.models('User', {
+user = api.model('User', {
     'username': fields.String(required=True, description='username'),
     'password': fields.String(required=True, description='user password')
 })
