@@ -1,9 +1,9 @@
 import logging.config
 
 from flask import Flask, Blueprint
-from flask_httpauth import HTTPBasicAuth
 
 from blog_app.api import api
+from blog_app.api.routes.auth.auth import ns as auth_ns
 from blog_app.api.routes.blog.articles import ns as articles_ns
 from blog_app.api.routes.blog.categories import ns as categories_ns
 from blog_app.config import settings
@@ -13,7 +13,6 @@ logging.config.fileConfig('config/logging.conf')
 log = logging.getLogger(__name__)
 
 app = Flask(__name__)
-auth = HTTPBasicAuth()
 
 
 def configure():
@@ -33,6 +32,7 @@ def initialize():
 
     blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
+    api.add_namespace(auth_ns)
     api.add_namespace(articles_ns)
     api.add_namespace(categories_ns)
     app.register_blueprint(blueprint)

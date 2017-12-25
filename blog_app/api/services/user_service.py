@@ -1,3 +1,5 @@
+from sqlalchemy.orm.exc import NoResultFound
+
 from blog_app.database import db
 from blog_app.database.models.auth.users import Users
 
@@ -34,3 +36,17 @@ def delete(user_id):
     db.session.delete(user)
     db.session.commit()
     return None, 204
+
+
+def verify_password(username_or_token, password):
+    # first try to authenticate by token
+    found_user = Users.verify_auth_token(username_or_token)
+    if not found_user:
+        # try to authenticate with username/password
+        try:
+            found_user = Users.query.filter(Users.username == username_or_token).one()
+            return found_user.verify_password(password)
+        except NoResultFound:
+            return False
+    g.user = found_user
+    return True
