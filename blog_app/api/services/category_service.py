@@ -1,5 +1,5 @@
 from blog_app.database import db
-from blog_app.database.models.blog.categories import Categories
+from blog_app.models.blog.categories import Categories
 
 
 def find(category_id):
@@ -18,6 +18,7 @@ def create(data):
         category.id = category_id
 
     db.session.add(category)
+    db.session.commit()
     return None, 201
 
 
