@@ -6,6 +6,7 @@ from flask_restplus import Resource
 from blog_app.api import api
 from blog_app.api.serializers import category, category_with_articles
 from blog_app.api.services import category_service
+from blog_app.auth import auth
 
 log = logging.getLogger(__name__)
 
@@ -41,9 +42,10 @@ class CategoryCollection(Resource):
         return category_service.create(data)
 
 
-@ns.route('/<int:id>')
+@ns.route('/<int:category_id>')
 @api.response(404, 'category not found')
 class CategoryItem(Resource):
+
     @api.marshal_with(category_with_articles)
     def get(self, category_id):
         """
@@ -54,6 +56,7 @@ class CategoryItem(Resource):
 
     @api.expect(category)
     @api.response(204, 'category successfully updated')
+    @auth.login_required
     def put(self, category_id):
         """
         updates a blog category
@@ -76,6 +79,7 @@ class CategoryItem(Resource):
         return category_service.update(category_id, data)
 
     @api.response(204, 'category sucessfully deleted')
+    @auth.login_required
     def delete(self, category_id):
         """
         deletes the category for the given id

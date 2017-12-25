@@ -7,16 +7,16 @@ from flask_restplus import Resource
 from blog_app.api import api
 from blog_app.api.serializers import user
 from blog_app.api.services import user_service
-from blog_app.app import auth
-from blog_app.database.models.auth.users import Users
+from blog_app.auth import auth
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('auth', description='user related operations')
+ns = api.namespace('auth', description='authentication related operations')
 
 
-@ns.route('/users/<int:id')
+@ns.route('/users/<int:user_id>')
 class UserItem(Resource):
+
     @api.marshal_with(user)
     def get(self, user_id):
         """
@@ -27,6 +27,7 @@ class UserItem(Resource):
 
     @api.expect(user)
     @api.response(204, 'user successfully updated')
+    @auth.login_required
     def put(self, user_id):
         """
         update a user
@@ -50,6 +51,7 @@ class UserItem(Resource):
         return user_service.update(user_id, data)
 
     @api.response(204, 'user successfully deleted')
+    @auth.login_required
     def delete(self, user_id):
         """
         deletes the user for the given id
@@ -59,7 +61,6 @@ class UserItem(Resource):
         return user_service.delete(user_id)
 
 
-@ns.route('/token')
 @auth.login_required
 def get_auth_token():
     """
@@ -72,12 +73,4 @@ def get_auth_token():
 
 @auth.verify_password
 def verify_password(username_or_token, password):
-    # first try to authenticate by token
-    found_user = Users.verify_auth_token(username_or_token)
-    if not found_user:
-        # try to authenticate with username/password
-        found_user = Users.query.filter(Users.username == username_or_token).one()
-        if not found_user or not found_user.verify_password(password):
-            return False
-    g.user = found_user
-    return True
+    return user_service.verify_password(username_or_token, password)

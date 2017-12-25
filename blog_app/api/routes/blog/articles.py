@@ -7,7 +7,7 @@ from blog_app.api import api
 from blog_app.api.parser import pagination_parser
 from blog_app.api.serializers import page_of_articles, blog_article
 from blog_app.api.services import article_service
-from blog_app.app import auth
+from blog_app.auth import auth
 
 log = logging.getLogger(__name__)
 
@@ -15,8 +15,8 @@ ns = api.namespace('blog/articles', description='blog articles related operation
 
 
 @ns.route('/')
-@auth.login_required
 class ArticleCollection(Resource):
+
     @api.expect(pagination_parser)
     @api.marshal_with(page_of_articles)
     def get(self):
@@ -27,6 +27,7 @@ class ArticleCollection(Resource):
         return article_service.paginate(data)
 
     @api.expect(blog_article)
+    @auth.login_required
     def post(self):
         """
         creates a new blog article
@@ -36,10 +37,11 @@ class ArticleCollection(Resource):
         return article_service.create(data)
 
 
-@ns.route('/<int:id>')
-@api.response(404, 'article not found')
+@ns.route('/<int:article_id>')
 class ArticleItem(Resource):
+
     @api.marshal_with(blog_article)
+    @api.response(404, 'article not found')
     def get(self, article_id):
         """
         :param article_id: the article to get
@@ -49,6 +51,7 @@ class ArticleItem(Resource):
 
     @api.expect(blog_article)
     @api.response(204, 'article successfully updated')
+    @auth.login_required
     def put(self, article_id):
         """
         update a blog article
@@ -74,6 +77,7 @@ class ArticleItem(Resource):
         return article_service.update(article_id, data)
 
     @api.response(204, 'article successfully deleted')
+    @auth.login_required
     def delete(self, article_id):
         """
         deletes the article for the given id
@@ -87,6 +91,7 @@ class ArticleItem(Resource):
 @ns.route('/archive/<int:year>/<int:month>/')
 @ns.route('/archive/<int:year>/<int:month>/<int:day>/')
 class ArticleArchiveCollection(Resource):
+
     @api.expect(pagination_parser, validate=True)
     @api.marshal_with(page_of_articles)
     def get(self, year, month=None, day=None):
