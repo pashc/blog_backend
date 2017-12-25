@@ -18,6 +18,7 @@ def create(data):
         category.id = category_id
 
     db.session.add(category)
+    db.session.commit()
     return None, 201
 
 
