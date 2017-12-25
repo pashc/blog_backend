@@ -14,7 +14,7 @@ class Articles(db.Model):
     pub_date = db.Column(db.DateTime)
 
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
-    category = db.relationship('Category', backref=db.backref('articles', lazy='dynamic'))
+    category = db.relationship('Categories', backref=db.backref('articles', lazy='dynamic'))
 
     def __init__(self, title, content, category, pub_date=None):
         self.title = title
