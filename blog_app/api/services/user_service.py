@@ -1,11 +1,15 @@
 from sqlalchemy.orm.exc import NoResultFound
 
+from blog_app.api.exceptions.UserNotFoundException import UserNotFoundException
 from blog_app.database import db
 from blog_app.database.models.auth.users import Users
 
 
 def find(user_id):
-    return Users.query.filter(Users.id == user_id).one()
+    user = Users.query.get(user_id)
+    if user is None:
+        raise UserNotFoundException('the user with the id %s could not be found.' % user_id)
+    return user
 
 
 def create(data):

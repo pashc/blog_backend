@@ -5,6 +5,7 @@ from flask.json import jsonify
 from flask_restplus import Resource
 
 from blog_app.api import api
+from blog_app.api.exceptions.UserNotFoundException import UserNotFoundException
 from blog_app.api.serializers import user
 from blog_app.api.services import user_service
 from blog_app.auth import auth
@@ -59,6 +60,11 @@ class UserItem(Resource):
         :return: None, status_code=204
         """
         return user_service.delete(user_id)
+
+
+@ns.errorhandler(UserNotFoundException)
+def handle_user_not_found(error):
+    return error.to_dict(), error.code
 
 
 @auth.login_required
