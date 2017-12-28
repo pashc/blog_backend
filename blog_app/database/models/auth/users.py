@@ -11,7 +11,7 @@ USER_ID = db.Sequence('user_id_seq', start=0)
 class Users(db.Model):
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, USER_ID, primary_key=True, server_default=USER_ID.next_value())
+    id = db.Column(db.Integer, primary_key=True, server_default=USER_ID.next_value())
     username = db.Column(db.String(32), index=True)
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(64))
