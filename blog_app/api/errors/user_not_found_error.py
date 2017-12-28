@@ -1,15 +1,15 @@
 class UserNotFoundException(Exception):
     code = 404
 
-    def __init__(self, message):
+    def __init__(self, user_id):
         Exception.__init__(self)
-        self.message = message
+        self.user_id = user_id
 
     def to_dict(self):
         return {
             "success": False,
             "error": {
                 "type": "UserNotFoundException",
-                "message": self.message
+                "message": 'The User with the id=[%s] could not be found.' % self.user_id
             }
         }

@@ -38,8 +38,9 @@ class Users(db.Model):
         user = Users.query.get(data['id'])
         return user
 
-    def __init__(self, username, password):
+    def __init__(self, username, email, password):
         self.username = username
+        self.email = email
         self.hash_password(password)
 
     def __repr__(self):
