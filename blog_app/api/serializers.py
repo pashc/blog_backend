@@ -33,5 +33,5 @@ category_with_articles = api.inherit('Blog category with articles', category, {
 
 user = api.model('User', {
     'username': fields.String(required=True, description='username'),
-    'password': fields.String(required=True, description='user password')
+    'email': fields.String(required=True, description='user email')
 })
