@@ -8,7 +8,7 @@ from blog_app.database import db
 USER_ID = db.Sequence('user_id_seq', start=0)
 
 
-class Users(db.Model):
+class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, server_default=USER_ID.next_value())
@@ -35,7 +35,7 @@ class Users(db.Model):
             return None  # valid token, but expired
         except BadSignature:
             return None  # invalid token
-        user = Users.query.get(data['id'])
+        user = User.query.get(data['id'])
         return user
 
     def __init__(self, username, email, password):

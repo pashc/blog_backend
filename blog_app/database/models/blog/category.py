@@ -3,7 +3,7 @@ from blog_app.database import db
 CATEGORY_ID = db.Sequence('category_id_seq', start=0)
 
 
-class Categories(db.Model):
+class Category(db.Model):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True, server_default=CATEGORY_ID.next_value())

@@ -5,7 +5,7 @@ from blog_app.database import db
 ARTICLE_ID = db.Sequence('article_id_seq', start=0)
 
 
-class Articles(db.Model):
+class Article(db.Model):
     __tablename__ = 'articles'
 
     id = db.Column(db.Integer, primary_key=True, server_default=ARTICLE_ID.next_value())

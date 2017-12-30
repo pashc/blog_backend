@@ -1,19 +1,19 @@
 from blog_app.database import db
-from blog_app.database.models.blog.categories import Categories
+from blog_app.database.models.blog.category import Category
 
 
 def find(category_id):
-    return Categories.query.filter(Categories.id == category_id).one()
+    return Category.query.filter(Category.id == category_id).one()
 
 
 def find_all():
-    return Categories.query.all()
+    return Category.query.all()
 
 
 def create(data):
     name = data.get('name')
     category_id = data.get('id')
-    category = Categories(name)
+    category = Category(name)
     if category_id:
         category.id = category_id
 
