@@ -15,6 +15,7 @@ ns = api.namespace('blog/categories', description='blog categories related opera
 
 @ns.route('/')
 class CategoryCollection(Resource):
+
     @api.marshal_list_with(category)
     def get(self):
         """
@@ -43,7 +44,6 @@ class CategoryCollection(Resource):
 
 
 @ns.route('/<int:category_id>')
-@api.response(404, 'category not found')
 class CategoryItem(Resource):
 
     @api.marshal_with(category_with_articles)
@@ -55,7 +55,6 @@ class CategoryItem(Resource):
         return category_service.find(category_id)
 
     @api.expect(category)
-    @api.response(204, 'category successfully updated')
     @auth.login_required
     def put(self, category_id):
         """
@@ -78,7 +77,6 @@ class CategoryItem(Resource):
         data = request.json
         return category_service.update(category_id, data)
 
-    @api.response(204, 'category sucessfully deleted')
     @auth.login_required
     def delete(self, category_id):
         """

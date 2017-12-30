@@ -50,7 +50,6 @@ class ArticleItem(Resource):
         return article_service.find(article_id)
 
     @api.expect(blog_article)
-    @api.response(204, 'article successfully updated')
     @auth.login_required
     def put(self, article_id):
         """
@@ -76,7 +75,6 @@ class ArticleItem(Resource):
         data = request.json
         return article_service.update(article_id, data)
 
-    @api.response(204, 'article successfully deleted')
     @auth.login_required
     def delete(self, article_id):
         """

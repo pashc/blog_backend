@@ -29,7 +29,6 @@ class UserItem(Resource):
         return auth_service.find(user_id)
 
     @api.expect(user)
-    @api.response(204, 'user successfully updated')
     @auth.login_required
     def put(self, user_id):
         """
@@ -54,7 +53,6 @@ class UserItem(Resource):
         data = request.json
         return auth_service.update(user_id, data)
 
-    @api.response(204, 'user successfully deleted')
     @auth.login_required
     def delete(self, user_id):
         """
