@@ -43,6 +43,7 @@ class UserItem(Resource):
 
         '''
         {
+            "email": "foo@bar.com",
             "username": "Topsy",
             "password": "Cret"
         }
@@ -74,13 +75,6 @@ class Register(Resource):
         return auth_service.register(data)
 
 
-@ns.errorhandler(UserNotFoundException)
-@ns.errorhandler(PasswordConfirmationException)
-@ns.errorhandler(UsernameOrEmailAlreadyInUseException)
-def handle_user_not_found(error):
-    return error.to_dict(), error.code
-
-
 @auth.login_required
 def get_auth_token():
     """
@@ -94,3 +88,10 @@ def get_auth_token():
 @auth.verify_password
 def verify_password(username_or_token, password):
     return auth_service.verify_password(username_or_token, password)
+
+
+@ns.errorhandler(UserNotFoundException)
+@ns.errorhandler(PasswordConfirmationException)
+@ns.errorhandler(UsernameOrEmailAlreadyInUseException)
+def handle_user_not_found(error):
+    return error.to_dict(), error.code

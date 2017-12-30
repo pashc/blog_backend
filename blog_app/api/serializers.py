@@ -32,11 +32,11 @@ category_with_articles = api.inherit('Blog category with articles', category, {
 })
 
 user = api.model('User', {
+    'email': fields.String(required=True, description='user email'),
     'username': fields.String(required=True, description='username'),
-    'email': fields.String(required=True, description='user email')
+    'password': fields.String(required=True, description='password')
 })
 
 user_register = api.inherit('Register User', user, {
-    'password': fields.String(required=True, description='password'),
     'confirm': fields.String(required=True, description='password confirmation'),
 })
