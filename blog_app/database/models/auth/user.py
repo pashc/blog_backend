@@ -27,7 +27,7 @@ class User(db.Model):
         return s.dumps({'id': self.id})
 
     def to_dict(self):
-        return dict(email=self.email, username=self.username)
+        return dict(id=self.id, email=self.email, username=self.username)
 
     @staticmethod
     def verify_auth_token(token):

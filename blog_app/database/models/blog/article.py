@@ -14,7 +14,14 @@ class Article(db.Model):
     pub_date = db.Column(db.DateTime)
 
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
-    category = db.relationship('Categories', backref=db.backref('articles', lazy='dynamic'))
+    category = db.relationship('Category', backref=db.backref('articles', lazy='dynamic'))
+
+    def to_dict(self):
+        return dict(id=self.id,
+                    title=self.title,
+                    content=self.content,
+                    pub_date=self.pub_date,
+                    category=self.category.name)
 
     def __init__(self, title, content, category, pub_date=None):
         self.title = title

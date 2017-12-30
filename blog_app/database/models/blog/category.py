@@ -9,6 +9,9 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True, server_default=CATEGORY_ID.next_value())
     name = db.Column(db.String(50))
 
+    def to_dict(self):
+        return dict(id=self.id, name=self.name)
+
     def __init__(self, name):
         self.name = name
 
