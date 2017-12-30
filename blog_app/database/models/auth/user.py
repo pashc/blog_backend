@@ -12,9 +12,9 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, server_default=USER_ID.next_value())
+    email = db.Column(db.String(64))
     username = db.Column(db.String(32), index=True)
     password_hash = db.Column(db.String(128))
-    email = db.Column(db.String(64))
 
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
@@ -25,6 +25,9 @@ class User(db.Model):
     def generate_auth_token(self, expiration=600):
         s = Serializer(settings.SECRET_KEY, expires_in=expiration)
         return s.dumps({'id': self.id})
+
+    def to_dict(self):
+        return dict(email=self.email, username=self.username)
 
     @staticmethod
     def verify_auth_token(token):

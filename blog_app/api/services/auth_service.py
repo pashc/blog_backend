@@ -11,9 +11,11 @@ from blog_app.database.models.auth.user import User
 
 def find(user_id):
     user = User.query.get(user_id)
+
     if user is None:
         raise UserNotFoundException(user_id)
-    return user
+
+    return user.to_dict()
 
 
 def register(data):
@@ -23,8 +25,9 @@ def register(data):
     if __username_or_password_already_exists(data.get('username'), data.get('email')):
         raise UsernameOrEmailAlreadyInUseException()
 
-    __create(data)
-    return None, 201
+    user = __create(data)
+
+    return user.to_dict(), 201
 
 
 def update(user_id, data):
@@ -35,7 +38,8 @@ def update(user_id, data):
 
     db.session.add(user)
     db.session.commit()
-    return None, 204
+
+    return user.to_dict(), 204
 
 
 def delete(user_id):
@@ -43,6 +47,7 @@ def delete(user_id):
 
     db.session.delete(user)
     db.session.commit()
+
     return None, 204
 
 
@@ -77,4 +82,5 @@ def __create(data):
 
     db.session.add(user)
     db.session.commit()
-    return None, 201
+
+    return user
