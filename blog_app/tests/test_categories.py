@@ -25,8 +25,7 @@ class CategoriesTests(BasicTest):
         category_id = json.loads(response.data).get('id')
 
         # when
-        result = self.app.get(self.BASE_URL + str(category_id),
-                              content_type='application/json')
+        result = self.app.get(self.BASE_URL + str(category_id))
         # then
         self.assertEqual(result.status_code, 200)
         self.assertEqual(response.data, bytes('{"id": %s, "name": "testing"}\n' % category_id, 'ascii'))
