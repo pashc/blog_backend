@@ -3,17 +3,16 @@ import unittest
 
 from blog_app.tests.test_basic import BasicTest
 
-BASE_URL = '/api/blog/categories/'
-
 
 class CategoriesTests(BasicTest):
+    BASE_URL = '/api/blog/categories/'
 
     def test_get_all(self):
         # given
         self.__create_test_category()
 
         # when
-        result = self.app.get(BASE_URL)
+        result = self.app.get(self.BASE_URL)
 
         # then
         self.assertEqual(result.status_code, 200)
@@ -26,7 +25,7 @@ class CategoriesTests(BasicTest):
         category_id = json.loads(response.data).get('id')
 
         # when
-        result = self.app.get(BASE_URL + str(category_id),
+        result = self.app.get(self.BASE_URL + str(category_id),
                               content_type='application/json')
         # then
         self.assertEqual(result.status_code, 200)
@@ -47,7 +46,7 @@ class CategoriesTests(BasicTest):
         category_id = json.loads(response.data).get('id')
 
         # when
-        result = self.app.put(BASE_URL + str(category_id),
+        result = self.app.put(self.BASE_URL + str(category_id),
                               data=json.dumps(dict(name='Other Name')),
                               content_type='application/json',
                               headers=self.get_auth_headers())
@@ -62,13 +61,13 @@ class CategoriesTests(BasicTest):
         category_id = json.loads(response.data).get('id')
 
         # when
-        result = self.app.delete(BASE_URL + str(category_id), headers=self.get_auth_headers())
+        result = self.app.delete(self.BASE_URL + str(category_id), headers=self.get_auth_headers())
 
         # then
         self.assertEqual(result.status_code, 204)
 
     def __create_test_category(self, name='testing'):
-        return self.app.post(BASE_URL,
+        return self.app.post(self.BASE_URL,
                              data=json.dumps(dict(name=name)),
                              content_type='application/json')
 
