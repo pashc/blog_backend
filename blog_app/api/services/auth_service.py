@@ -31,7 +31,7 @@ def register(data):
 
 
 def update(user_id, data):
-    user = find(user_id)
+    user = User.query.get(user_id)
 
     user.username = data.get('username')
     user.hash_password(data.get('password'))
@@ -43,7 +43,7 @@ def update(user_id, data):
 
 
 def delete(user_id):
-    user = find(user_id)
+    user = User.query.get(user_id)
 
     db.session.delete(user)
     db.session.commit()
