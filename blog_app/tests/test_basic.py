@@ -8,6 +8,7 @@ from blog_app.database import db
 
 
 class BasicTest(unittest.TestCase):
+    TEST_USER_ID = -1
     TEST_USER = 'user'
     TEST_USER_EMAIL = 'foo@bar.com'
     TEST_USER_PASS = 'pass'
@@ -26,10 +27,11 @@ class BasicTest(unittest.TestCase):
         with app.app_context():
             db.drop_all()
             db.create_all()
-            self.register(self.TEST_USER,
-                          self.TEST_USER_EMAIL,
-                          self.TEST_USER_PASS,
-                          self.TEST_USER_PASS)
+            created_test_user_response = self.register(self.TEST_USER,
+                                                       self.TEST_USER_EMAIL,
+                                                       self.TEST_USER_PASS,
+                                                       self.TEST_USER_PASS)
+            self.TEST_USER_ID = json.loads(created_test_user_response.data).get('id')
 
         self.assertEqual(app.debug, False)
 
