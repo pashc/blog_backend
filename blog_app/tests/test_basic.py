@@ -8,7 +8,7 @@ from blog_app.database import db
 
 
 class BasicTest(unittest.TestCase):
-
+    TEST_USER = 'user'
     TEST_USER_EMAIL = 'foo@bar.com'
     TEST_USER_PASS = 'pass'
 
@@ -26,7 +26,7 @@ class BasicTest(unittest.TestCase):
         with app.app_context():
             db.drop_all()
             db.create_all()
-            self.register('user',
+            self.register(self.TEST_USER,
                           self.TEST_USER_EMAIL,
                           self.TEST_USER_PASS,
                           self.TEST_USER_PASS)
@@ -44,7 +44,7 @@ class BasicTest(unittest.TestCase):
     def get_auth_headers(self):
         return {
             'Authorization': 'Basic ' + base64.b64encode(
-                bytes('user' + ":" + self.TEST_USER_PASS, 'ascii')).decode('ascii')
+                bytes(self.TEST_USER + ":" + self.TEST_USER_PASS, 'ascii')).decode('ascii')
         }
 
     def register(self, username, email, password, confirm):
