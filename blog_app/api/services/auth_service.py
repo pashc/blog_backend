@@ -68,7 +68,7 @@ def verify_password(username_or_token, password):
 def __username_or_password_already_exists(username, email):
     try:
         found_user = User.query.filter(or_(User.username == username, User.email == email)).one()
-        return found_user is not None
+        return found_user
     except NoResultFound:
         return False
 
