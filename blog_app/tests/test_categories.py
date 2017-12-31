@@ -16,7 +16,7 @@ class CategoriesTests(BasicTest):
 
         # then
         self.assertEqual(result.status_code, 200)
-        self.assertRegexpMatches(result.data, b'[{"id": \\d+, "name": "testing"}]')
+        self.assertRegex(result.data, b'[{"id": \\d+, "name": "testing"}]')
 
     def test_get_by_id(self):
         # given
@@ -36,7 +36,7 @@ class CategoriesTests(BasicTest):
 
         # when/then
         self.assertEqual(result.status_code, 201)
-        self.assertRegexpMatches(result.data, b'{"id": \\d+, "name": "testing"}')
+        self.assertRegex(result.data, b'{"id": \\d+, "name": "testing"}')
 
     def test_update(self):
         # given
@@ -52,7 +52,7 @@ class CategoriesTests(BasicTest):
 
         # then
         self.assertEqual(result.status_code, 200)
-        self.assertRegexpMatches(response.data, b'[{"id": \\d+, "name": "testing"}]')
+        self.assertRegex(response.data, b'[{"id": \\d+, "name": "testing"}]')
 
     def test_delete(self):
         response = self.__create_test_category()
