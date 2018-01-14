@@ -43,7 +43,6 @@ class UserItem(Resource):
 class Register(Resource):
 
     @api.expect(user_register)
-    @api.response(201, "user successfully registered")
     def post(self):
         data = request.json
         return auth_service.register(data).to_dict(), 201
