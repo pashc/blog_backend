@@ -1,10 +1,16 @@
+from blog_app.api.errors.article_not_found_error import ArticleNotFoundException
 from blog_app.api.services import category_service
 from blog_app.database import db
 from blog_app.database.models.blog.article import Article
 
 
 def find(article_id):
-    return Article.query.filter(Article.id == article_id).one()
+    found_article = Article.query.get(article_id)
+
+    if found_article is None:
+        raise ArticleNotFoundException(article_id)
+
+    return found_article.to_dict()
 
 
 # todo add date validation
