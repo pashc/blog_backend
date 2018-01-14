@@ -56,32 +56,6 @@ class AuthTests(BasicTest):
         self.assertEqual(result_data.get('username'), 'user')
         self.assertEqual(result_data.get('email'), 'foo@bar.com')
 
-    def test_update_user(self):
-        # given
-        register_response = self.register(username='UserToUpdate',
-                                          email='user@update.com',
-                                          password='pass',
-                                          confirm='pass')
-        self.assertEqual(register_response.status_code, 201)
-        user_to_update_id = json.loads(register_response.data).get('id')
-
-        # when
-        result = self.app.put(self.USER_BASE_URL + str(user_to_update_id),
-                              data=json.dumps(dict(username='UpdatedUsername',
-                                                   email='updated@user.com',
-                                                   password='newPass')),
-                              content_type='application/json',
-                              headers=self.get_auth_headers())
-
-        # then
-        self.assertEqual(result.status_code, 204)
-
-        updated_user_response = self.app.get(self.USER_BASE_URL + str(user_to_update_id))
-        updated_user_data = json.loads(updated_user_response.data)
-
-        self.assertEqual(updated_user_data.get('username'), 'UpdatedUsername')
-        self.assertEqual(updated_user_data.get('email'), 'updated@user.com')
-
     def test_update_user_fails_due_to_already_used_username(self):
         # given
         register_response = self.register(username='UserToUpdate',

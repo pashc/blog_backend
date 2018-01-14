@@ -28,32 +28,6 @@ class UserItem(Resource):
         """
         return auth_service.find(user_id).to_dict(), 200
 
-    @api.expect(user)
-    @auth.login_required
-    def put(self, user_id):
-        """
-        update a user
-
-        use this operation to change the username and password for the given id
-
-        all the fields are mandatory
-
-        * send a JSON object with the fields in the request body
-
-        '''
-        {
-            "email": "foo@bar.com",
-            "username": "Topsy",
-            "password": "Cret"
-        }
-        '''
-        :param user_id: the user to update
-        :return: None, status_code=204
-        """
-        data = request.json
-        auth_service.update(user_id, data)
-        return None, 204
-
     @auth.login_required
     def delete(self, user_id):
         """

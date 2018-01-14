@@ -28,20 +28,6 @@ def register(data):
     return __create(data)
 
 
-def update(user_id, data):
-    email = data.get('email')
-    username = data.get('username')
-    if __username_or_password_already_exists(username, email):
-        raise UsernameOrEmailAlreadyInUseException
-
-    user = User.query.get(user_id)
-    user.username = username
-    user.email = email
-
-    db.session.add(user)
-    db.session.commit()
-
-
 def delete(user_id):
     user = User.query.get(user_id)
 
