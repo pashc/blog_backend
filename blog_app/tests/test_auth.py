@@ -56,48 +56,6 @@ class AuthTests(BasicTest):
         self.assertEqual(result_data.get('username'), 'user')
         self.assertEqual(result_data.get('email'), 'foo@bar.com')
 
-    def test_update_user_fails_due_to_already_used_username(self):
-        # given
-        register_response = self.register(username='UserToUpdate',
-                                          email='user@update.com',
-                                          password='pass',
-                                          confirm='pass')
-        self.assertEqual(register_response.status_code, 201)
-        user_to_update_id = json.loads(register_response.data).get('id')
-
-        # when
-        result = self.app.put(self.USER_BASE_URL + str(user_to_update_id),
-                              data=json.dumps(dict(username='user',
-                                                   email='updated@user.com',
-                                                   password='newPass')),
-                              content_type='application/json',
-                              headers=self.get_auth_headers())
-
-        # then
-        self.assertEqual(result.status_code, 400)
-        self.assertIn(b'The Username or Email is already in use.', result.data)
-
-    def test_update_user_fails_due_to_already_used_email(self):
-        # given
-        register_response = self.register(username='UserToUpdate',
-                                          email='user@update.com',
-                                          password='pass',
-                                          confirm='pass')
-        self.assertEqual(register_response.status_code, 201)
-        user_to_update_id = json.loads(register_response.data).get('id')
-
-        # when
-        result = self.app.put(self.USER_BASE_URL + str(user_to_update_id),
-                              data=json.dumps(dict(username='UpdatedUsername',
-                                                   email='foo@bar.com',
-                                                   password='newPass')),
-                              content_type='application/json',
-                              headers=self.get_auth_headers())
-
-        # then
-        self.assertEqual(result.status_code, 400)
-        self.assertIn(b'The Username or Email is already in use.', result.data)
-
     def test_delete_user(self):
         # given
         register_response = self.register(username='UserToDelete',
