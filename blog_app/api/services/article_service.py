@@ -34,9 +34,16 @@ def create(data):
 def update(article_id, data):
     article = find(article_id)
 
-    article.title = data.get('title')
-    article.content = data.get('content')
-    article.category = category_service.find(data.get('category_id'))
+    title = data.get('title')
+    content = data.get('content')
+    category_id = data.get('category_id')
+
+    if title:
+        article.title = title
+    if content:
+        article.content = content
+    if category_id:
+        article.category = category_service.find(category_id)
 
     db.session.add(article)
     db.session.commit()
