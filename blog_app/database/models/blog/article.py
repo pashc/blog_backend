@@ -21,7 +21,7 @@ class Article(db.Model):
                     title=self.title,
                     content=self.content,
                     pub_date=self.pub_date,
-                    category=self.category.name)
+                    category=self.category.name if self.category else None)
 
     def __init__(self, title, content, category, pub_date=None):
         self.title = title
