@@ -68,7 +68,8 @@ class CategoriesTests(BasicTest):
     def __create_test_category(self, name='testing'):
         return self.app.post(self.BASE_URL,
                              data=json.dumps(dict(name=name)),
-                             content_type='application/json')
+                             content_type='application/json',
+                             headers=self.get_auth_headers())
 
 
 if __name__ == '__main__':

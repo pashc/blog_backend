@@ -26,7 +26,7 @@ class CategoryItem(Resource):
         return category_service.find(category_id).to_dict(), 200
 
     @api.expect(category)
-    @api.response(201, 'category successfully created')
+    @auth.login_required
     def post(self):
         """
         creates a new blog category
