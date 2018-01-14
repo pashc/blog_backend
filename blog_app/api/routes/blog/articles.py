@@ -4,6 +4,8 @@ from flask import request
 from flask_restplus import Resource
 
 from blog_app.api import api
+from blog_app.api.errors.article_not_found_error import ArticleNotFoundException
+from blog_app.api.errors.category_not_found_error import CategoryNotFoundException
 from blog_app.api.parser import pagination_parser
 from blog_app.api.serializers import page_of_articles, blog_article
 from blog_app.api.services import article_service
@@ -88,3 +90,9 @@ class ArticleItem(Resource):
         """
         article_service.delete(article_id)
         return None, 204
+
+
+@ns.errorhandler(ArticleNotFoundException)
+@ns.errorhandler(CategoryNotFoundException)
+def handle_not_found(error):
+    return error.to_dict(), error.code
