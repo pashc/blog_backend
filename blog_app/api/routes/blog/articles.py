@@ -17,16 +17,16 @@ ns = api.namespace('blog/articles', description='blog articles related operation
 
 
 @ns.route('/')
-class ArticleCollection(Resource):
+@ns.route('/<int:article_id>')
+class ArticleItem(Resource):
 
-    @api.expect(pagination_parser)
-    @api.marshal_with(page_of_articles)
-    def get(self):
+    @api.marshal_with(blog_article)
+    def get(self, article_id):
         """
-        :return: list of blog articles
+        :param article_id: the article to get
+        :return: the article for the given id
         """
-        data = pagination_parser.parse_args(request)
-        return list(map(lambda a: a.to_dict(), article_service.paginate(data)))
+        return article_service.find(article_id).to_dict(), 200
 
     @api.expect(blog_article)
     @auth.login_required
@@ -39,19 +39,6 @@ class ArticleCollection(Resource):
         article_service.create(data)
 
         return None, 201
-
-
-@ns.route('/<int:article_id>')
-class ArticleItem(Resource):
-
-    @api.marshal_with(blog_article)
-    @api.response(404, 'article not found')
-    def get(self, article_id):
-        """
-        :param article_id: the article to get
-        :return: the article for the given id
-        """
-        return article_service.find(article_id).to_dict(), 200
 
     @api.expect(blog_article)
     @auth.login_required
@@ -90,6 +77,19 @@ class ArticleItem(Resource):
         """
         article_service.delete(article_id)
         return None, 204
+
+
+@ns.route('/list')
+class ArticleCollection(Resource):
+
+    @api.expect(pagination_parser)
+    @api.marshal_with(page_of_articles)
+    def get(self):
+        """
+        :return: list of blog articles
+        """
+        data = pagination_parser.parse_args(request)
+        return list(map(lambda a: a.to_dict(), article_service.paginate(data)))
 
 
 @ns.errorhandler(ArticleNotFoundException)

@@ -27,10 +27,10 @@ class BasicTest(unittest.TestCase):
         with app.app_context():
             db.drop_all()
             db.create_all()
-            created_test_user_response = self.register(self.TEST_USER,
-                                                       self.TEST_USER_EMAIL,
-                                                       self.TEST_USER_PASS,
-                                                       self.TEST_USER_PASS)
+            created_test_user_response = self.create_user(self.TEST_USER,
+                                                          self.TEST_USER_EMAIL,
+                                                          self.TEST_USER_PASS,
+                                                          self.TEST_USER_PASS)
             self.TEST_USER_ID = json.loads(created_test_user_response.data).get('id')
 
         self.assertEqual(app.debug, False)
@@ -49,9 +49,9 @@ class BasicTest(unittest.TestCase):
                 bytes(self.TEST_USER + ":" + self.TEST_USER_PASS, 'ascii')).decode('ascii')
         }
 
-    def register(self, username, email, password, confirm):
+    def create_user(self, username, email, password, confirm):
         return self.app.post(
-            '/api/auth/register',
+            '/api/auth/users',
             data=json.dumps(dict(username=username, email=email, password=password, confirm=confirm)),
             content_type='application/json',
             follow_redirects=True

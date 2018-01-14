@@ -37,6 +37,6 @@ user = api.model('User', {
     'password': fields.String(required=True, description='password')
 })
 
-user_register = api.inherit('Register User', user, {
+user_create = api.inherit('Create User', user, {
     'confirm': fields.String(required=True, description='password confirmation'),
 })

@@ -8,7 +8,7 @@ from blog_app.api import api
 from blog_app.api.errors.password_confirmation_error import PasswordConfirmationException
 from blog_app.api.errors.user_not_found_error import UserNotFoundException
 from blog_app.api.errors.username_or_email_already_in_use_error import UsernameOrEmailAlreadyInUseException
-from blog_app.api.serializers import user, user_register
+from blog_app.api.serializers import user, user_create
 from blog_app.api.services import auth_service
 from blog_app.auth import auth
 
@@ -17,6 +17,7 @@ log = logging.getLogger(__name__)
 ns = api.namespace('auth', description='authentication related operations')
 
 
+@ns.route('/users')
 @ns.route('/users/<int:user_id>')
 class UserItem(Resource):
 
@@ -28,6 +29,11 @@ class UserItem(Resource):
         """
         return auth_service.find(user_id).to_dict(), 200
 
+    @api.expect(user_create)
+    def post(self):
+        data = request.json
+        return auth_service.register(data).to_dict(), 201
+
     @auth.login_required
     def delete(self, user_id):
         """
@@ -37,15 +43,6 @@ class UserItem(Resource):
         """
         auth_service.delete(user_id)
         return None, 204
-
-
-@ns.route("/register")
-class Register(Resource):
-
-    @api.expect(user_register)
-    def post(self):
-        data = request.json
-        return auth_service.register(data).to_dict(), 201
 
 
 @auth.login_required

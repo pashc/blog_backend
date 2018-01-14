@@ -12,7 +12,7 @@ class CategoriesTests(BasicTest):
         self.__create_test_category()
 
         # when
-        result = self.app.get(self.BASE_URL)
+        result = self.app.get(self.BASE_URL + 'list')
 
         # then
         self.assertEqual(result.status_code, 200)
