@@ -26,7 +26,7 @@ class UserItem(Resource):
         :param user_id: the user to get
         :return: the user for the given id
         """
-        return auth_service.find(user_id)
+        return auth_service.find(user_id).to_dict(), 200
 
     @api.expect(user)
     @auth.login_required
@@ -51,7 +51,8 @@ class UserItem(Resource):
         :return: None, status_code=204
         """
         data = request.json
-        return auth_service.update(user_id, data)
+        auth_service.update(user_id, data)
+        return None, 204
 
     @auth.login_required
     def delete(self, user_id):
@@ -60,7 +61,8 @@ class UserItem(Resource):
         :param user_id: the user to delete
         :return: None, status_code=204
         """
-        return auth_service.delete(user_id)
+        auth_service.delete(user_id)
+        return None, 204
 
 
 @ns.route("/register")
@@ -70,7 +72,7 @@ class Register(Resource):
     @api.response(201, "user successfully registered")
     def post(self):
         data = request.json
-        return auth_service.register(data)
+        return auth_service.register(data).to_dict(), 201
 
 
 @auth.login_required

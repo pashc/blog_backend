@@ -15,7 +15,7 @@ def find(user_id):
     if user is None:
         raise UserNotFoundException(user_id)
 
-    return user.to_dict()
+    return user
 
 
 def register(data):
@@ -25,9 +25,7 @@ def register(data):
     if __username_or_password_already_exists(data.get('username'), data.get('email')):
         raise UsernameOrEmailAlreadyInUseException()
 
-    user = __create(data)
-
-    return user.to_dict(), 201
+    return __create(data)
 
 
 def update(user_id, data):
@@ -43,16 +41,12 @@ def update(user_id, data):
     db.session.add(user)
     db.session.commit()
 
-    return user.to_dict(), 204
-
 
 def delete(user_id):
     user = User.query.get(user_id)
 
     db.session.delete(user)
     db.session.commit()
-
-    return None, 204
 
 
 def verify_password(username_or_token, password):

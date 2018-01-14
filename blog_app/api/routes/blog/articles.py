@@ -24,7 +24,7 @@ class ArticleCollection(Resource):
         :return: list of blog articles
         """
         data = pagination_parser.parse_args(request)
-        return article_service.paginate(data)
+        return list(map(lambda a: a.to_dict(), article_service.paginate(data)))
 
     @api.expect(blog_article)
     @auth.login_required
@@ -34,7 +34,9 @@ class ArticleCollection(Resource):
         :return: None, status_code=201
         """
         data = request.json
-        return article_service.create(data)
+        article_service.create(data)
+
+        return None, 201
 
 
 @ns.route('/<int:article_id>')
@@ -47,7 +49,7 @@ class ArticleItem(Resource):
         :param article_id: the article to get
         :return: the article for the given id
         """
-        return article_service.find(article_id)
+        return article_service.find(article_id).to_dict(), 200
 
     @api.expect(blog_article)
     @auth.login_required
@@ -73,7 +75,9 @@ class ArticleItem(Resource):
         :return: None, status_code=204
         """
         data = request.json
-        return article_service.update(article_id, data)
+        article_service.update(article_id, data)
+
+        return None, 204
 
     @auth.login_required
     def delete(self, article_id):
@@ -82,4 +86,5 @@ class ArticleItem(Resource):
         :param article_id: the article to delete
         :return: None, status_code=204
         """
-        return article_service.delete(article_id)
+        article_service.delete(article_id)
+        return None, 204

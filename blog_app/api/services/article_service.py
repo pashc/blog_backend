@@ -10,7 +10,7 @@ def find(article_id):
     if found_article is None:
         raise ArticleNotFoundException(article_id)
 
-    return found_article.to_dict()
+    return found_article
 
 
 def paginate(data):
@@ -29,7 +29,6 @@ def create(data):
 
     db.session.add(article)
     db.session.commit()
-    return None, 201
 
 
 def update(article_id, data):
@@ -37,12 +36,10 @@ def update(article_id, data):
 
     article.title = data.get('title')
     article.content = data.get('content')
-    # todo add not found validation
     article.category = category_service.find(data.get('category_id'))
 
     db.session.add(article)
     db.session.commit()
-    return None, 204
 
 
 def delete(article_id):
@@ -50,4 +47,3 @@ def delete(article_id):
 
     db.session.delete(article)
     db.session.commit()
-    return None, 204

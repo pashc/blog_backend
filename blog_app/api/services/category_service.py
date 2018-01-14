@@ -27,7 +27,7 @@ def create(data):
     db.session.add(category)
     db.session.commit()
 
-    return category.to_dict(), 201
+    return category
 
 
 def update(category_id, data):
@@ -37,7 +37,7 @@ def update(category_id, data):
     db.session.add(category)
     db.session.commit()
 
-    return category.to_dict(), 200
+    return category
 
 
 def delete(category_id):
@@ -45,5 +45,3 @@ def delete(category_id):
 
     db.session.delete(category)
     db.session.commit()
-
-    return None, 204

@@ -21,7 +21,8 @@ class CategoryCollection(Resource):
         """
         :return: list of all blog categories
         """
-        return category_service.find_all()
+        all_categories = category_service.find_all()
+        return list(map(lambda c: c.to_dict(), all_categories)), 200
 
     @api.expect(category)
     @api.response(201, 'category successfully created')
@@ -40,48 +41,48 @@ class CategoryCollection(Resource):
         :return: None, status_code=201
         """
         data = request.json
-        return category_service.create(data)
+        return category_service.create(data).to_dict(), 201
 
+    @ns.route('/<int:category_id>')
+    class CategoryItem(Resource):
 
-@ns.route('/<int:category_id>')
-class CategoryItem(Resource):
+        @api.marshal_with(category_with_articles)
+        def get(self, category_id):
+            """
+            :param category_id: the category to get
+            :return: category with a list of articles
+            """
+            return category_service.find(category_id).to_dict(), 200
 
-    @api.marshal_with(category_with_articles)
-    def get(self, category_id):
-        """
-        :param category_id: the category to get
-        :return: category with a list of articles
-        """
-        return category_service.find(category_id)
+        @api.expect(category)
+        @auth.login_required
+        def put(self, category_id):
+            """
+            updates a blog category
 
-    @api.expect(category)
-    @auth.login_required
-    def put(self, category_id):
-        """
-        updates a blog category
+            use this operation to change the name of a blog category
 
-        use this operation to change the name of a blog category
+            * send a JSON object with the new name in the request body
 
-        * send a JSON object with the new name in the request body
+            '''
+            {
+                "name": "New Category Name"
+            }
+            '''
+            * specify the ID of the category to modify in the request URL path
 
-        '''
-        {
-            "name": "New Category Name"
-        }
-        '''
-        * specify the ID of the category to modify in the request URL path
+            :param category_id: the category to update
+            :return: None, status_code=201
+            """
+            data = request.json
+            return category_service.update(category_id, data).to_dict(), 200
 
-        :param category_id: the category to update
-        :return: None, status_code=201
-        """
-        data = request.json
-        return category_service.update(category_id, data)
-
-    @auth.login_required
-    def delete(self, category_id):
-        """
-        deletes the category for the given id
-        :param category_id: the category to delete
-        :return: None, status_code=204
-        """
-        return category_service.delete(category_id)
+        @auth.login_required
+        def delete(self, category_id):
+            """
+            deletes the category for the given id
+            :param category_id: the category to delete
+            :return: None, status_code=204
+            """
+            category_service.delete(category_id)
+            return None, 204
