@@ -1,9 +1,15 @@
+from blog_app.api.errors.category_not_found_error import CategoryNotFoundException
 from blog_app.database import db
 from blog_app.database.models.blog.category import Category
 
 
 def find(category_id):
-    return Category.query.get(category_id)
+    found_category = Category.query.get(category_id)
+
+    if found_category is None:
+        raise CategoryNotFoundException(category_id)
+
+    return found_category
 
 
 def find_all():
