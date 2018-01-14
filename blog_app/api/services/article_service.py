@@ -13,24 +13,6 @@ def find(article_id):
     return found_article.to_dict()
 
 
-# todo add date validation
-def find_by_date(data, year, month, day):
-    page = data.get('page', 1)
-    per_page = data.get('per_page', 10)
-
-    start_day = day if day else 1
-    end_day = day + 1 if day else 31
-
-    start_month = month if month else 1
-    end_month = month + 1 if month else 12
-    start_date = '{0:04d}-{1:02d}-{2:02d}'.format(year, start_month, start_day)
-    end_date = '{0:04d}-{1:02d}-{2:02d}'.format(year, end_month, end_day)
-    return Article.query.filter(
-        Article.pub_date >= start_date).filter(
-        Article.pub_date <= end_date).paginate(
-        page, per_page, error_out=False)
-
-
 def paginate(data):
     page = data.get('page', 1)
     per_page = data.get('per_page', 10)

@@ -83,22 +83,3 @@ class ArticleItem(Resource):
         :return: None, status_code=204
         """
         return article_service.delete(article_id)
-
-
-@ns.route('/archive/<int:year>/')
-@ns.route('/archive/<int:year>/<int:month>/')
-@ns.route('/archive/<int:year>/<int:month>/<int:day>/')
-class ArticleArchiveCollection(Resource):
-
-    @api.expect(pagination_parser, validate=True)
-    @api.marshal_with(page_of_articles)
-    def get(self, year, month=None, day=None):
-        """
-        returns list of articles for the given time period
-        :param year: the year, mandatory
-        :param month: the month, optional
-        :param day: the day, optional
-        :return: articles for the given tie period
-        """
-        data = pagination_parser.parse_args(request)
-        return article_service.find_by_date(data, year, month, day)
