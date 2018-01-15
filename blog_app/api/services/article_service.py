@@ -23,7 +23,11 @@ def paginate(data):
 def create(data):
     title = data.get('title')
     content = data.get('content')
-    category = category_service.find(data.get('category_id'))
+    category_id = data.get('category_id')
+    category = None
+
+    if category_id:
+        category = category_service.find(category_id)
 
     article = Article(title, content, category)
 
