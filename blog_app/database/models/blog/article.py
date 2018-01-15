@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import time
 from blog_app.database import db
 
 ARTICLE_ID = db.Sequence('article_id_seq', start=0)
@@ -20,7 +20,7 @@ class Article(db.Model):
         return dict(id=self.id,
                     title=self.title,
                     content=self.content,
-                    pub_date=self.pub_date,
+                    pub_date=time.mktime(self.pub_date.timetuple()),
                     category=self.category.name if self.category else None)
 
     def __init__(self, title, content, category, pub_date=None):
