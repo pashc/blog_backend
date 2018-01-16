@@ -1,4 +1,5 @@
 from blog_app.api.errors.article_not_found_error import ArticleNotFoundException
+from blog_app.api.errors.invalid_arguments_for_creation_error import InvalidArgumentsForCreationException
 from blog_app.api.services import category_service
 from blog_app.database import db
 from blog_app.database.models.blog.article import Article
@@ -21,18 +22,23 @@ def paginate(data):
 
 
 def create(data):
-    title = data.get('title')
-    content = data.get('content')
-    category_id = data.get('category_id')
-    category = None
+    errors = []
 
-    if category_id:
-        category = category_service.find(category_id)
+    title = __get_valid(data, 'title', errors)
+    content = __get_valid(data, 'content', errors)
+    category_id = __get_valid(data, 'category_id', errors)
 
-    article = Article(title, content, category)
+    if len(errors) > 0:
+        raise InvalidArgumentsForCreationException(errors)
+
+    article = Article(title=title,
+                      content=content,
+                      category_id=category_id)
 
     db.session.add(article)
     db.session.commit()
+
+    return article.id
 
 
 def update(article_id, data):
@@ -58,3 +64,10 @@ def delete(article_id):
 
     db.session.delete(article)
     db.session.commit()
+
+
+def __get_valid(data, key, errors):
+    title = data.get(key)
+    if not title:
+        errors.append("%s can't be empty" % key)
+    return title

@@ -6,6 +6,7 @@ from flask_restplus import Resource
 from blog_app.api import api
 from blog_app.api.errors.article_not_found_error import ArticleNotFoundException
 from blog_app.api.errors.category_not_found_error import CategoryNotFoundException
+from blog_app.api.errors.invalid_arguments_for_creation_error import InvalidArgumentsForCreationException
 from blog_app.api.parser import pagination_parser
 from blog_app.api.serializers import blog_article
 from blog_app.api.services import article_service
@@ -36,9 +37,9 @@ class ArticleItem(Resource):
         :return: None, status_code=201
         """
         data = request.json
-        article_service.create(data)
+        article_id = article_service.create(data)
 
-        return None, 201
+        return article_id, 201
 
     @api.expect(blog_article)
     @auth.login_required
@@ -47,9 +48,7 @@ class ArticleItem(Resource):
         update a blog article
 
         use this operation to change the title, the content,
-        or the related category of an article for the given id
-
-        all the fields are mandatory
+        or the related category of an article
 
         * send a JSON object with the fields in the request body
 
@@ -93,5 +92,6 @@ class ArticleCollection(Resource):
 
 @ns.errorhandler(ArticleNotFoundException)
 @ns.errorhandler(CategoryNotFoundException)
+@ns.errorhandler(InvalidArgumentsForCreationException)
 def handle_not_found(error):
     return error.to_dict(), error.code
