@@ -34,12 +34,10 @@ class ArticleItem(Resource):
     def post(self):
         """
         creates a new blog article
-        :return: None, status_code=201
+        :return: the new created article, status_code=201
         """
         data = request.json
-        article_id = article_service.create(data)
-
-        return article_id, 201
+        return article_service.create(data).to_dict(), 201
 
     @api.expect(blog_article)
     @auth.login_required

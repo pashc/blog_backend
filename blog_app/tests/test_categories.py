@@ -32,6 +32,7 @@ class CategoriesTests(BasicTest):
 
         # when
         result = self.app.get(self.BASE_URL + str(category_id))
+
         # then
         self.assertEqual(result.status_code, 200)
         result_data = json.loads(result.data)

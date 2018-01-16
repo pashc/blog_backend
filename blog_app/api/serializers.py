@@ -3,9 +3,11 @@ from flask_restplus import fields
 from blog_app.api import api
 
 blog_article = api.model('Blog Article', {
+    'id': fields.Integer(readOnly=True, description='unique identifier for an article'),
     'title': fields.String(required=True, description='article title'),
     'content': fields.String(required=True, description='article content'),
-    'category_id': fields.Integer(attribute='category.id'),
+    'category_id': fields.Integer(attribute='category_id'),
+    'pub_date': fields.Integer(attribute='pub_date'),
 })
 
 pagination = api.model('A page of results', {

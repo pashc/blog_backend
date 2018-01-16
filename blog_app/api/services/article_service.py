@@ -38,7 +38,7 @@ def create(data):
     db.session.add(article)
     db.session.commit()
 
-    return article.id
+    return article
 
 
 def update(article_id, data):
