@@ -9,14 +9,20 @@ class CategoriesTests(BasicTest):
 
     def test_get_all(self):
         # given
-        self.__create_test_category()
+        self.__create_test_category(name='testing1')
+        self.__create_test_category(name='testing2')
 
         # when
         result = self.app.get(self.BASE_URL + 'list')
 
         # then
         self.assertEqual(result.status_code, 200)
-        self.assertRegex(result.data, b'[{"id": \\d+, "name": "testing"}]')
+        result_data = json.loads(result.data)
+        self.assertEqual(len(result_data), 2)
+        self.assertEqual(result_data[0].get('id'), 1)
+        self.assertEqual(result_data[0].get('name'), 'testing1')
+        self.assertEqual(result_data[1].get('id'), 2)
+        self.assertEqual(result_data[1].get('name'), 'testing2')
 
     def test_get_by_id(self):
         # given
@@ -28,7 +34,9 @@ class CategoriesTests(BasicTest):
         result = self.app.get(self.BASE_URL + str(category_id))
         # then
         self.assertEqual(result.status_code, 200)
-        self.assertEqual(response.data, bytes('{"id": %s, "name": "testing"}\n' % category_id, 'ascii'))
+        result_data = json.loads(result.data)
+        self.assertEqual(result_data.get('id'), category_id)
+        self.assertEqual(result_data.get('name'), 'testing')
 
     def test_create(self):
         # given
@@ -36,7 +44,9 @@ class CategoriesTests(BasicTest):
 
         # when/then
         self.assertEqual(result.status_code, 201)
-        self.assertRegex(result.data, b'{"id": \\d+, "name": "testing"}')
+        result_data = json.loads(result.data)
+        self.assertEqual(result_data.get('id'), 1)
+        self.assertEqual(result_data.get('name'), 'testing')
 
     def test_update(self):
         # given
@@ -52,7 +62,9 @@ class CategoriesTests(BasicTest):
 
         # then
         self.assertEqual(result.status_code, 200)
-        self.assertRegex(response.data, b'[{"id": \\d+, "name": "testing"}]')
+        result_data = json.loads(result.data)
+        self.assertEqual(result_data.get('id'), 1)
+        self.assertEqual(result_data.get('name'), 'Other Name')
 
     def test_delete(self):
         response = self.__create_test_category()
