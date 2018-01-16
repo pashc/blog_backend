@@ -2,9 +2,22 @@ import base64
 import unittest
 
 from flask import json
+from sqlalchemy import text
 
 from blog_app.app import app
 from blog_app.database import db
+
+
+def _restart_db_sequences(engine):
+    sequence_sql = '''SELECT sequence_name FROM information_schema.sequences
+                        WHERE sequence_schema='public'
+                     '''
+
+    for seq in [name for (name,) in db.engine.execute(text(sequence_sql))]:
+        try:
+            engine.execute(text('ALTER SEQUENCE %s RESTART' % seq))
+        except Exception as e:
+            print(e)
 
 
 class BasicTest(unittest.TestCase):
@@ -27,6 +40,7 @@ class BasicTest(unittest.TestCase):
         with app.app_context():
             db.drop_all()
             db.create_all()
+            _restart_db_sequences(db.engine)
             created_test_user_response = self.create_user(self.TEST_USER,
                                                           self.TEST_USER_EMAIL,
                                                           self.TEST_USER_PASS,
