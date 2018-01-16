@@ -17,7 +17,7 @@ def paginate(data):
     page = data.get('page', 1)
     per_page = data.get('per_page', 10)
 
-    return Article.query.paginate(page, per_page, error_out=False)
+    return Article.query.paginate(page, per_page, error_out=False).items
 
 
 def create(data):

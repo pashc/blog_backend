@@ -14,12 +14,7 @@ blog_article = api.model('Blog Article', {
 pagination = api.model('A page of results', {
     'page': fields.Integer(description='number of the current page of the results'),
     'pages': fields.Integer(description='total number of pages of results'),
-    'per_page': fields.Integer(description='number of articles per page of results'),
-    'total': fields.Integer(description='total number of results')
-})
-
-page_of_articles = api.inherit('Page of articles', pagination, {
-    'items': fields.List(fields.Nested(blog_article))
+    'per_page': fields.Integer(description='number of articles per page of results')
 })
 
 category = api.model('Blog Category', {

@@ -7,7 +7,7 @@ from blog_app.api import api
 from blog_app.api.errors.article_not_found_error import ArticleNotFoundException
 from blog_app.api.errors.category_not_found_error import CategoryNotFoundException
 from blog_app.api.parser import pagination_parser
-from blog_app.api.serializers import page_of_articles, blog_article
+from blog_app.api.serializers import blog_article
 from blog_app.api.services import article_service
 from blog_app.auth import auth
 
@@ -83,7 +83,6 @@ class ArticleItem(Resource):
 class ArticleCollection(Resource):
 
     @api.expect(pagination_parser)
-    @api.marshal_with(page_of_articles)
     def get(self):
         """
         :return: list of blog articles
