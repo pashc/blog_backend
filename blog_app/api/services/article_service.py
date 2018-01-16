@@ -67,7 +67,7 @@ def delete(article_id):
 
 
 def __get_valid(data, key, errors):
-    title = data.get(key)
-    if not title:
-        errors.append("%s can't be empty" % key)
-    return title
+    value = data.get(key)
+    if not value:
+        errors.append("article %s can't be empty" % key)
+    return value

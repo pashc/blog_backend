@@ -31,10 +31,9 @@ class CategoryItem(Resource):
         """
         creates a new blog category
 
-        * send a JSON object with name and an optional id
+        * send a JSON object with category name
         '''
         {
-            "id": "42",
             "name": "Ultimate Category Name"
         }
         '''

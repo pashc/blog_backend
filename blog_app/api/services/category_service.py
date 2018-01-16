@@ -1,4 +1,5 @@
 from blog_app.api.errors.category_not_found_error import CategoryNotFoundException
+from blog_app.api.errors.invalid_arguments_for_creation_error import InvalidArgumentsForCreationException
 from blog_app.database import db
 from blog_app.database.models.blog.category import Category
 
@@ -18,11 +19,11 @@ def find_all():
 
 def create(data):
     name = data.get('name')
-    category_id = data.get('id')
-    category = Category(name)
 
-    if category_id:
-        category.id = category_id
+    if not name:
+        raise InvalidArgumentsForCreationException(list("category name can't be empty"))
+
+    category = Category(name=name)
 
     db.session.add(category)
     db.session.commit()
